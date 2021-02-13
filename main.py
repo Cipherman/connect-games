@@ -10,8 +10,8 @@ if __name__ == '__main__':
 
     game = ConnectGame(board_x, board_y, win_k)
 
-    move_x = [1, 0]
-    move_y = [1, 2]
+    move_x = [1, 3, 2]
+    move_y = [1, 2, 1]
 
     game.print_board()
     for x, y in zip(move_x, move_y):
