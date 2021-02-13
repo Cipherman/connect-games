@@ -5,7 +5,7 @@ import numpy as np
 class State(enum.IntEnum):
     Empty = 0
     Black = 1
-    White = 2
+    White = -1
     Border = 3
 
 
@@ -30,6 +30,12 @@ class ConnectGame:
             for j in [0, self.board.shape[1]-1]:
                 self.board[i][j] = State.Border
 
+        self.candidate_move = []
+        for x in range(self.board.shape[0]):
+            for y in range(self.board.shape[1]):
+                if self.board[x][y] == State.Empty:
+                    self.candidate_move.append((x,y))
+
     def print_board(self):
         for x in range(self.board.shape[0]):
             for y in range(self.board.shape[1]):
@@ -48,6 +54,7 @@ class ConnectGame:
     def move(self, x, y, color):
         if self.board[x][y] == State.Empty:
             self.board[x][y] = color
+            self.candidate_move.remove((x,y))
         else:
             print("Point not empty.")
 
@@ -78,7 +85,7 @@ class ConnectGame:
         _x = x
         _y = y
         color = self.board[x][y]
-        for i in range(self.win_k-1):
+        for i in range(self.win_k):
             _x += step[0]
             _y += step[1]
             if self._check_position_state(_x, _y, color):
@@ -87,7 +94,7 @@ class ConnectGame:
                 break
         _x = x
         _y = y
-        for i in range(self.win_k-1):
+        for i in range(self.win_k):
             _x -= step[0]
             _y -= step[1]
             if self._check_position_state(_x, _y, color):
