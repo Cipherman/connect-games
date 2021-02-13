@@ -10,13 +10,15 @@ if __name__ == '__main__':
 
     game = ConnectGame(board_x, board_y, win_k)
 
-    move_x = [1, 3, 2]
-    move_y = [1, 2, 1]
+    move_x = [1, 3, 2, 3, 1, 3]
+    move_y = [1, 2, 1, 1, 3, 3]
+    turn = [State.White, State.Black, State.White, State.Black, State.White, State.Black]
 
     game.print_board()
-    for x, y in zip(move_x, move_y):
-        print("Move Made")
-        game.move(x, y, State.White)
+    print("")
+    for x, y, turn in zip(move_x, move_y, turn):
+        print("Move Made: ", x, y)
+        game.move(x, y, turn)
         game.print_board()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+        print(game.check_move_result(x,y))
+        print(" ")
