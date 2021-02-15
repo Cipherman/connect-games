@@ -1,9 +1,8 @@
 """Connect Games"""
-import random
 
-from random_player import random_player
-from connect_game import State
-from connect_game import ConnectGame
+from players.random_player import random_player
+from connect_games.connect_game import State
+from connect_games.connect_game import ConnectGame
 
 if __name__ == '__main__':
     win_k = 6
