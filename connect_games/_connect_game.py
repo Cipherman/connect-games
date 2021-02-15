@@ -8,11 +8,32 @@ class State(enum.IntEnum):
     White = -1
     Border = 3
 
+    @classmethod
+    def state_string(cls, state):
+        if state == cls.Empty:
+            return "Empty"
+        if state == cls.Black:
+            return "Black"
+        if state == cls.White:
+            return "White"
+        if state == cls.Border:
+            return "Border"
+
 
 class Result(enum.IntEnum):
     Win = 1
-    Lose = -1
-    NoResult = 0
+    NoResult = 2
+    Draw = 3
+
+    @classmethod
+    def result_string(cls, result):
+        if result == cls.Win.value:
+            return "Win"
+        if result == cls.Draw.value:
+            return "Draw"
+        if result == cls.NoResult.value:
+            return "No Result"
+
 
 
 class ConnectGame:

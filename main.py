@@ -1,23 +1,28 @@
 """Connect Games"""
 
 from players.random_player import random_player
-from connect_games.connect_game import State
-from connect_games.connect_game import ConnectGame
+from connect_games._connect_game import State
+from connect_games.gomoku import Gomoku
+from connect_games.tictactoe import TicTacToe
 
 if __name__ == '__main__':
-    win_k = 6
-    board_x = 6
-    board_y = 6
+    play_game = "Gomoku"
 
-    game = ConnectGame(board_x, board_y, win_k)
-    game.turn = State.Black
+    if play_game == "Gomoku":
+        game = Gomoku()
+    else:
+        game = TicTacToe()
+
     while game.candidate_move:
         (x, y) = random_player(game)
-        game.move(x, y, game.turn)
+        game.make_move(x, y)
 
         game.print_board()
-        game.turn = -game.turn
+        print("Move no. ", game.move_no, " Last move: ", game.game_record[-1])
         print(" ")
-        if game.check_move_result(x,y):
-            print("Someone Won")
+        someone_win, side =  game.check_game_result()
+        if someone_win:
+            print(State.state_string(side), "Win!")
             break
+    if not someone_win:
+        print("Game Drawn")
