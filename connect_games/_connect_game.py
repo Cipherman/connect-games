@@ -97,7 +97,7 @@ class ConnectGame:
         if self._check_direction_state(x, y, [1, -1]):
             return True
         # North East - South West
-        if self._check_direction_state(x, y, [-1, 1]):
+        if self._check_direction_state(x, y, [1, 1]):
             return True
         return False
 
