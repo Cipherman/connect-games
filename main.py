@@ -8,7 +8,7 @@ from connect_games.tictactoe import TicTacToe
 from game_manager import GameManager
 
 if __name__ == '__main__':
-    play = "TicTacToe"
+    play = "Gomoku"
 
     game_dict = {"Gomoku":Gomoku, "TicTacToe": TicTacToe}
     if play in game_dict:
@@ -19,5 +19,6 @@ if __name__ == '__main__':
 
     manager = GameManager(game)
     manager.play_game(RandomPlayer(), RandomPlayer())
+    manager.export_game_record()
 
 
