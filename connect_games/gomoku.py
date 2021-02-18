@@ -12,7 +12,7 @@ class Gomoku(ConnectGame):
 
     def make_move(self, x, y):
         super().move(x=x, y=y, color=self.turn)
-        self.turn = - self.turn
+        self.turn = -self.turn
         self.move_no += 1
         self.game_record.append((x,y))
 
