@@ -3,7 +3,6 @@ from connect_games._connect_game import State, ConnectGame
 
 
 class TicTacToe(ConnectGame):
-
     def __init__(self):
         super().__init__(x=3, y=3, win_k=3)
         self.turn = State.Black

@@ -1,3 +1,5 @@
+""" Base classes for connected games"""
+
 import enum
 import numpy as np
 
@@ -35,27 +37,25 @@ class Result(enum.IntEnum):
             return "No Result"
 
 
-
 class ConnectGame:
-
     def __init__(self, x, y, win_k=3):
         self.win_k = win_k
         self.turn = State.Black
 
         # initialize empty board
-        self.board = np.zeros((x+2, y+2))
-        for i in [0, self.board.shape[0]-1]:
+        self.board = np.zeros((x + 2, y + 2))
+        for i in [0, self.board.shape[0] - 1]:
             for j in range(self.board.shape[1]):
                 self.board[i][j] = State.Border
         for i in range(self.board.shape[0]):
-            for j in [0, self.board.shape[1]-1]:
+            for j in [0, self.board.shape[1] - 1]:
                 self.board[i][j] = State.Border
 
         self.candidate_move = []
         for x in range(self.board.shape[0]):
             for y in range(self.board.shape[1]):
                 if self.board[x][y] == State.Empty:
-                    self.candidate_move.append((x,y))
+                    self.candidate_move.append((x, y))
 
     def print_board(self):
         for x in range(self.board.shape[0]):
@@ -75,7 +75,7 @@ class ConnectGame:
     def move(self, x, y, color):
         if self.board[x][y] == State.Empty:
             self.board[x][y] = color
-            self.candidate_move.remove((x,y))
+            self.candidate_move.remove((x, y))
         else:
             print("Point not empty.")
 

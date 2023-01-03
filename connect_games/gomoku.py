@@ -3,7 +3,6 @@ from connect_games._connect_game import State, ConnectGame
 
 
 class Gomoku(ConnectGame):
-
     def __init__(self, k=19):
         super().__init__(x=k, y=k, win_k=5)
         self.turn = State.Black
@@ -14,7 +13,7 @@ class Gomoku(ConnectGame):
         super().move(x=x, y=y, color=self.turn)
         self.turn = -self.turn
         self.move_no += 1
-        self.game_record.append((x,y))
+        self.game_record.append((x, y))
 
     def check_game_result(self):
         x, y = self.game_record[-1]
