@@ -5,6 +5,9 @@ from connect_games._connect_game import State, ConnectGame
 class Gomoku(ConnectGame):
     def __init__(self, k=19):
         super().__init__(x=k, y=k, win_k=5)
+        self.x = 19
+        self.y = 19
+        self.win_k = 5
         self.turn = State.Black
         self.move_no = 0
         self.game_record = []

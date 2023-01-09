@@ -1,36 +1,52 @@
 """ Game play manager """
 from connect_games._connect_game import State
 
-class GameManager:
+import gymnasium as gym
+from gymnasium import spaces
 
-    def __init__(self, game):
+class ConnectGamesEnv(gym.Env):
+    metadata = {"render_modes":["human"]}
+
+    def __init__(self, game=None, agent=None, opponent=None, agent_sidem, render_mode=None):
+
+        # connect game structs and stats
         self._game_class = game
-        self._game = None
+        self._game = self._game_class()
         self.win_game_collections = {State.Black: [], State.White: []}
-        self.drawn_game_collections = []
+        self.drawn_game_collections = []        
 
-    def play_game(self, black_player, white_player, render=True):
+        # connect game settings
+        self.x = self._game.x
+        self.y = self._game.y
+        self.win_k = self._game.win_k
+
+        # player settings
+        self.agent_side = agent
+        self.oppo_side = State.White if self.agent_side == State.Black else State.Black
+        self.oppo = opponent
+
+        self.observation_space = spaces.Box(low=-1, high=3, shape=(self.x, self.y), dtype=np.int)
+        self.action_space = spaces.Box(low=0, high=max(self.x, self.y), shape=(2, 1), dtype=np.int)
+
+    def reset(self):
         self._game = self._game_class()
         self._game_record = []
+ 
+        observation = {"game": self._game, "record": self._game_record}
+        info = {"status": "reset"}
+         
+        return observation, info
 
-        while self._game.candidate_move:
-            if self._game.turn == State.Black:
-                (x, y) = black_player.make_move(self._game)
-            else:
-                (x, y) = white_player.make_move(self._game)
+    #def step(self, black_player, white_player, render=True):
+    def step(self, move, render=True):
 
-            self._game.make_move(x,y)
-            if render:
-                self.render_game()
-            someone_win, side = self._game.check_game_result()
-            if someone_win:
-                if render:
-                    print(State.state_string(side), "Win!")
-                self.win_game_collections[side].append(self.export_game_record())
-                break
-        if not someone_win:
-            if render:
-                print("Game Drawn!")
+        (x, y) = self.oppo.make_move(self._game)
+        self._game.make_move(x,y)
+
+        done, side = self._game.check_game_result()
+        if done:
+            self.win_game_collections[side].append(self.export_game_record())
+        if self._game.move_no == (self.x * self.y) # board is full
             self.drawn_game_collections.append(self.export_game_record())
 
     def render_game(self):
@@ -47,25 +63,3 @@ class GameManager:
                                str((len(self._game.board) - 3) * x + y).rjust(num_length, '0'))
         return ','.join(game_record)
 
-    def run_experiment(self, game_nums, black_player, white_player, render=False, save_dir=None):
-        for _ in range(game_nums):
-            self.play_game(black_player=black_player,white_player=white_player,render=render)
-
-        """
-        if not save_dir:
-            white_path = os.path.join(save_dir, "white_win")
-            black_path = os.path.join(save_dir, "black_win")
-            draw_path = os.path.join(save_dir, "draw")
-            for record in self.win_game_collections:
-                with 
-        """
-
-        string_dict = {State.Black: "Black Win", State.White: "White Win"}
-        print("Results")
-        print("total games:", game_nums)
-        print("Black:", black_player.name, "White:", white_player.name)
-        print("------------")
-        for wins in self.win_game_collections:
-            print(string_dict[wins], len(self.win_game_collections[wins]), "(", len(self.win_game_collections[wins]) / game_nums,")")
-        print("Draw", len(self.drawn_game_collections), "(", len(self.drawn_game_collections) / game_nums,")")
-        print("------------")

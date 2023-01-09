@@ -5,6 +5,9 @@ from connect_games._connect_game import State, ConnectGame
 class TicTacToe(ConnectGame):
     def __init__(self):
         super().__init__(x=3, y=3, win_k=3)
+        self.x = 3
+        self.y = 3
+        self.win_k = 3
         self.turn = State.Black
         self.move_no = 0
         self.game_record = []
