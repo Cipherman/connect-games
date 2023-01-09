@@ -1,21 +1,20 @@
 """Connect Games"""
 
+from connect_games._connect_game import State
+from ConnectGamesEnv import ConnectGamesEnv
+from TournamentManager import TournamentManager
+
 from players.random_player import RandomPlayer
 
-from connect_games.gomoku import Gomoku
-from connect_games.tictactoe import TicTacToe
-
-from game_manager import GameManager
 
 if __name__ == '__main__':
-    play = "TicTacToe"
+    game = "TicTacToe"
+    #game = "Gomoku"
+    agent = RandomPlayer()
+    opponent = RandomPlayer()
 
-    game_dict = {"Gomoku": Gomoku, "TicTacToe": TicTacToe}
-    if play in game_dict:
-        game = game_dict[play]
-    else:
-        print("Game not available!")
-        exit()
+    agent_play_black = TournamentManager(game=game, opponent=opponent, agent=agent, agent_side=State.White)
 
-    manager = GameManager(game)
-    manager.run_experiment(2000, RandomPlayer(), RandomPlayer(), render=False)
+    game_nums = 1000
+    agent_play_black.run_tournament(game_nums=game_nums, render=False)  
+

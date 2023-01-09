@@ -57,11 +57,10 @@ class ConnectGamesEnv(gym.Env):
         super().reset(seed=seed)
         self.game = self.game_dict[self.game_class]()
 
-        (x, y) = (0, 0)
-        if self.game.turn == self.oppo_side:
+        if self.oppo_side == State.Black:
             move = self._oppo.make_move(self.game)
             (x, y) = self._get_xy(move)
-        self.game.make_move(x,y)
+            self.game.make_move(x,y)
 
         obs_board = self._flatten_board()
         observation = {"board": obs_board, "turn": self.game.turn}

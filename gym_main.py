@@ -19,20 +19,22 @@ if __name__ == '__main__':
     #print(check_env(env, skip_render_check=True))
     
     #"""
-    env = ConnectGamesEnv(game=game, opponent = RandomPlayer(), agent_side = State.White)
+    env = ConnectGamesEnv(game=game, opponent = RandomPlayer(), agent_side = State.Black)
     observation, info = env.reset()
     print(env.game.board)
+    
 
     games = 0
     won = 0
     lost = 0
     drawn = 0 
-    for _ in range(1000):
+    for _ in range(10):
         #print(env.game.game_record)
         #print(len(env.game.game_record))
         #print(env.game.candidate_move)
         #print(len(env.game.candidate_move))
-        action = agent.make_move(env.game)
+        if isinstance(agent, RandomPlayer):
+            action = agent.make_move(env.game)
         observation, reward, done, info = env.step(action)
  
         env.render_game()
@@ -49,9 +51,12 @@ if __name__ == '__main__':
                 drawn+=1
             if "illegal move" in info["info"]:
                 break
+            print("game record: ", env.game.game_record)
+            print("game record str: ", env.export_game_record())
             observation, info = env.reset()
+            
 
     print(f"Games played = {games}")
-    print(f"Won = {won}, Lost = {lost}, Drawn = {drawn}")
-    print(f"Won = {(won/games)*100}%, Lost = {(lost/games)*100}%, Drawn = {(drawn/games)*100}%")
+    #print(f"Won = {won}, Lost = {lost}, Drawn = {drawn}")
+    #print(f"Won = {(won/games)*100}%, Lost = {(lost/games)*100}%, Drawn = {(drawn/games)*100}%")
     #"""       

@@ -13,14 +13,15 @@ class TournamentManager:
         self.agent_side = agent_side
         self.agent = agent
 
-        self.game_collections = {"won":[], "lost":[], "drawn":[]}
+        self.game_collections = {"Won":[], "Lost":[], "Drawn":[]}
         
 
-    def play_game(self, render=False):
+    def play_games(self, game_nums, render=False):
+        games = 0
         observation, info = self.env.reset()
         while True:
             if isinstance(self.agent, RandomPlayer):
-                action = self.agent.make_move(env.game)
+                action = self.agent.make_move(self.env.game)
             else:
                 action = self.agent.make_move(observation)
             observation, reward, done, info = self.env.step(action)
@@ -36,11 +37,15 @@ class TournamentManager:
                     self.game_collections["Lost"].append(game_record)
                 else:
                     self.game_collections["Drawn"].append(game_record)
-                break
+
+                games+=1 
+                if games < game_nums:
+                    observation, info = self.env.reset()
+                else:
+                    break
 
     def run_tournament(self, game_nums, render=False, save_dir=None):
-        for _ in range(game_nums):
-            self.play_game(render=render)
+        self.play_games(game_nums=game_nums, render=render)
 
         """
         if not save_dir:
@@ -54,9 +59,9 @@ class TournamentManager:
         color_name = {State.Black: "Black", State.White: "White"}
         print("Results")
         print(f"total games: {game_nums}")
-        print(f"Agent: {color_name_dict[self.agent_side]}")
+        print(f"Agent: {color_name[self.agent_side]}")
         print("------------")
         for result, records in self.game_collections.items():
             rate = (len(records) / game_nums) * 100
-            print(f"{result} rate: {rate}% {(len(records)} games)"
+            print(f"{result} rate: {rate}% ({len(records)} games)")
         print("------------")
