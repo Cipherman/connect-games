@@ -67,7 +67,7 @@ class ConnectGame:
                 elif self.board[x][y] == State.White:
                     print("o", end="")
                 elif self.board[x][y] == State.Border:
-                    print("B", end="")
+                    print(" ", end="")
                 else:
                     print(self.board[x][y])
             print("")
@@ -83,8 +83,8 @@ class ConnectGame:
         for x in range(self.board.shape[0]):
             for y in range(self.board.shape[1]):
                 if self.check_move_result(x, y):
-                    return True, self.board[x][y]
-        return False, None
+                    return np.bool(True), self.board[x][y]
+        return np.bool(False), None
 
     def check_move_result(self, x, y):
         # North - South

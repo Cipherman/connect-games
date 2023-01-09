@@ -1,5 +1,5 @@
 import random
-
+import numpy as np
 
 class RandomPlayer:
     def __init__(self):
@@ -7,4 +7,7 @@ class RandomPlayer:
 
     def make_move(self, game):
         cand_no = random.randint(0, len(game.candidate_move)-1)
-        return game.candidate_move[cand_no]
+        (x, y) = game.candidate_move[cand_no]
+        action = np.zeros((game.board.shape[0], game.board.shape[1]))
+        action[x][y] = 1
+        return np.ravel(action)
